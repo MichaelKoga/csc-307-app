@@ -13,6 +13,11 @@ function MyApp() {
 	setCharacters(updated);   
     }
 
+    function updatelist(person) {
+	setCharacters([...characters, person]);
+	<Form handleSubmit={updateList} />
+    }
+
     return (     
         <div className="container">       
 	    <Table
