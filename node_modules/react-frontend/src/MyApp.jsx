@@ -17,18 +17,6 @@ function MyApp() {
 	setCharacters([...characters, person]);
     }
 
-    function fetchUsers() {
-	const promise  = fetch("https://localhost:8000/users");
-	return promise;
-    }
-
-    useEffect(() => {
-	fetchUsers()
-	    .then((res) => res.json())
-	    .then((json => setCharacters(json["users_list"]))
-	    .catch((error) => { console.log(error); });
-    }, [] );
-
     return (     
         <div className="container">       
 	    <Table
