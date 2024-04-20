@@ -12,28 +12,6 @@ const findUserByName = (name) => {
 	);
 };
 
-const findUserByNameAndJob = (name, job) => {
-	return users["users_list"].filter(
-		(user) => user["name"] === name && user["job"] === job
-	);
-};
-
-const addUser = (user) => {
-	users["users_list"].push(user);
-	return user;
-};
-
-const deleteUser = (id) => {	
-	const index = users["users_list"].findIndex((user) => user.id === id);
-	
-	if(index !== -1)
-	{
-		const deletedUser = users["users_list"].splice(index, 1)[0]; // delete one element at the index, will return at index 0
-		return deletedUser;
-	}
-	return null;
-}; 
-
 const users = {
 	users_list: [
 		{
@@ -65,12 +43,6 @@ const users = {
 
 app.use(express.json());
 
-app.post("/users", (req, res) => {
-	const userToAdd = req.body;
-	addUser(userToAdd);
-	res.send();
-});
-
 app.get("/users/:id", (req, res) => {  
 	const id = req.params["id"];  
 	let result = findUserById(id);  
@@ -86,34 +58,13 @@ app.get("/users/:id", (req, res) => {
 
 app.get("/users", (req, res) => {
 	const name = req.query.name;
-	const job = req.query.job;
-	
-	if(name && job)
+	if(name != undefined) 
 	{
-		let result = findUserByNameAndJob(name, job);
-		result = { users_list: result };    
+		let result = findUserByName(name);
+		result = { users_list: result };
 		res.send(result);
 	}
-	else if(name)  
-	{   
-		let result = findUserByName(name);   
-		result = { users_list: result };   
-		res.send(result);  
-	}
-	else
-	{
-		res.send(users);
-	}
-});
-
-app.delete("/users/:id", (req, res) => {  
-	const id = req.params["id"];  
-	const deletedUser = deleteUser(id);
-	if(deletedUser === undefined)
-	{
-		res.status(404).send("User with ID ${id} could not be found");
-	}
-	else
+	else 
 	{
 		res.send(users);
 	}
