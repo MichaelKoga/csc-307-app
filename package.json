@@ -4,9 +4,8 @@
   "description": "This is the individual project for Intro to Software Engineering course",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "npx nodemon backend.js",
-    "start": "node backend.js"
+    "test": "echo \"Error: no test specified\" && exit 1", 
+    "start": "cd packages/react-frontend && npm run dev"
   },
   "author": "",
   "license": "ISC",     
