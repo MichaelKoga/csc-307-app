@@ -19,9 +19,15 @@ const findUserByNameAndJob = (name, job) => {
 	);
 };
 
+const generateRandomId = () => {
+	const id = Math.floor(Math.random() * 100) + 1;
+	return id;
+}
+
 const addUser = (user) => {  
-	users["users_list"].push(user);  
-	return user; 
+	const newUser = { ...user, id: generateRandomId() };
+	users["users_list"].push(newUser);  
+	return newUser; 
 };
 
 const deleteUser = (id) => {
@@ -35,6 +41,7 @@ const deleteUser = (id) => {
 	
 	return null; 
 };
+
 
 const users = {
 	users_list: [
@@ -71,8 +78,10 @@ app.use(express.json());
 
 app.post("/users", (req, res) => {  
 	const userToAdd = req.body;  
-	addUser(userToAdd);  
-	res.send(); 
+	const newUser = addUser(userToAdd);  
+	res.status(201)
+		.location(`/users/${newUser.id}`)
+		.json(newUser); 
 });
 
 app.get("/users/:id", (req, res) => {  

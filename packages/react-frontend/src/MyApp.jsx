@@ -7,10 +7,31 @@ function MyApp() {
     const [characters, setCharacters] = useState([]);
 
     function removeOneCharacter(index) {     
-	const updated = characters.filter((character, i) => {       
-	    return i !== index;     
-	});     
-	setCharacters(updated);   
+	const characterToDelete = characters[index];
+	fetch(`http://localhost:8000/users/${characterToDelete.id}`, {
+	    method: "DELETE",
+	    headers: {
+		"Content-Type": "application/json",
+	    },
+	})
+	    .then((response) => {
+		if(reponse.status === 204)
+		{
+		    const updated = characters.filter((_, i) => i !== index);
+		    setCharacters(updated);
+		}
+		else if(response.status === 404)
+		{
+		    alert("User not found.");
+		}
+		else
+		{
+		    throw new Error(`Request failed with status ${response.status}`);
+		}
+	    })
+	    .catch((error) => {
+		console.error(error);
+	    }); 
     }
 
     function updateList(person) {
@@ -40,7 +61,23 @@ function MyApp() {
 		"Content-Type": "application/json",
 	    },
 	    body: JSON.stringify(person),
-	});
+	})
+	    .then((response) => {
+		if(response.status === 201) // get the http status 
+		{
+		    return response.json(); // parse as json
+		}
+		else
+		{
+		    throw new Error(`Request failed with status ${response.status}`);
+		}
+	    })
+	    .then((data) => {
+		setCharacters([...characters, data]);
+	    })
+	    .catch((error) => {
+		console.error(error);
+	    });
 
 	return promise;
     }
