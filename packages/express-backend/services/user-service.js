@@ -12,13 +12,17 @@ mongoose
 async function getUsers(name, job) {
 	let users;
 
-	if (name === undefined && job === undefined) {
-		users = userModel.find();   }
+	if (name && job) {
+		users = await findUserByNameAndJob(name, job);   
+    }
 	else if (name && !job) {
-		users = findUserByName(name);   
+		users = await findUserByName(name);   
 	} else if (job && !name) {
-		users = findUserByJob(job);   
-	}   
+		users = await findUserByJob(job);   
+	}
+    else {
+        users = await userModel.find();
+    }
 	return users; 
 }  
 
@@ -47,7 +51,7 @@ async function findUserByNameAndJob(name, job) {
 	return await userModel.find({ name: name, job: job });
 }
 
-export default {   
+export {   
 	addUser,   
 	getUsers,   
 	findUserById,   

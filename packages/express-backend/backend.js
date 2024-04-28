@@ -1,15 +1,7 @@
 import express from "express";
 import cors from "cors";
 
-import {  
-	addUser,  
-	getUsers,  
-	findUserById,  
-	findUserByName,  
-	findUserByJob,
-    findUserByNameAndJob,
-    findUserByIdAndDelete,
-} from './services/user-service.js';
+import { addUser, getUsers, findUserById, findUserByName, findUserByJob, findUserByNameAndJob, findUserByIdAndDelete, } from './services/user-service.js';
 
 const app = express();
 const port = 8000;
@@ -84,7 +76,7 @@ app.delete("/users/:id", async (req, res) => {
 	    }  
 	    else  
 	    {   
-		    res.send(users);  
+		    res.status(200).send("Successful deletion of ${id}");  
 	    } 
     } catch (err) {
         console.error(err);
